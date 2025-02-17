@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="297dp"
+        android:layout_height="260dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="468dp"
+        android:src="@drawable/sueta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/my_button"
         android:layout_width="193dp"
