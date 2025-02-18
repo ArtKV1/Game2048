@@ -28,15 +28,38 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     private var isRestartDealogShowing = false
     private val handler = Handler(Looper.getMainLooper())
     private var totalTranslationX = 0f
-    private var masOfAnimationCount: Array<Int> = Array(16) { 0 }
+
+    companion object
+    {
+        public var masOfAnimationCount: Array<Int> = Array(16) { 0 }
+        public lateinit var masOfNumbers: Array<Int>
+    }
 
     private lateinit var gestureDetector: GestureDetector
+
+    private fun startGame()
+    {
+        masOfNumbers = Array(16) { 0 }
+        GameBrain.getTwoRandomNumbersForButtons()
+        for (i in 0..15)
+        {
+            if (masOfNumbers[i] != 0)
+            {
+                val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+                val myButton = findViewById<Button>(buttonId)
+                myButton.text = masOfNumbers[i].toString()
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         //TODO: Сделать кнопку паузы.
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamescene)
+
+        startGame()
 
         for (i in 0..15)
         {
