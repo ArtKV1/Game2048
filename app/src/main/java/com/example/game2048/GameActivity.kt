@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 
 
 class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
@@ -29,10 +30,26 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     private val handler = Handler(Looper.getMainLooper())
     private var totalTranslationX = 0f
 
+    private val colorMap = mapOf(
+        "" to R.color.game0,
+        "2" to R.color.game2,
+        "4" to R.color.game4,
+        "8" to R.color.game8,
+        "16" to R.color.game16,
+        "32" to R.color.game32,
+        "64" to R.color.game64,
+        "128" to R.color.game128,
+        "256" to R.color.game256,
+        "512" to R.color.game512,
+        "1024" to R.color.game1024,
+        "2048" to R.color.game2048
+    )
+
     companion object
     {
         public var masOfAnimationCount: Array<Int> = Array(16) { 0 }
         public lateinit var masOfNumbers: Array<Int>
+        public var score: Int = 0
     }
 
     private lateinit var gestureDetector: GestureDetector
@@ -40,38 +57,28 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     private fun startGame()
     {
         masOfNumbers = Array(16) { 0 }
+        //ДЛЯ ТЕСТА!
+        //GameBrain.testGeneration()
         GameBrain.getTwoRandomNumbersForButtons()
         for (i in 0..15)
         {
+            val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+            val myButton = findViewById<Button>(buttonId)
             if (masOfNumbers[i] != 0)
             {
-                val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
-                val myButton = findViewById<Button>(buttonId)
                 myButton.text = masOfNumbers[i].toString()
             }
+            myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
         }
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
-        //TODO: Сделать кнопку паузы.
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamescene)
 
         startGame()
-
-        for (i in 0..15)
-        {
-            if ((i + 1) % 4 == 0)
-                masOfAnimationCount[i] = 0
-            else if ((i + 1) % 4 == 1)
-                masOfAnimationCount[i] = 3
-            else if ((i + 1) % 4 == 2)
-                masOfAnimationCount[i] = 2
-            else if ((i + 1) % 4 == 3)
-                masOfAnimationCount[i] = 1
-        }
 
         timerTextView = findViewById(R.id.timerTextView)
         startTimer()
@@ -82,6 +89,13 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
             isRunning = false
             showRestartDialog()
             Toast.makeText(this, "Нажата кнопка: ${button.text}", Toast.LENGTH_SHORT).show()
+        }
+
+        val button3: Button = findViewById(R.id.button_pause2)
+
+        button3.setOnClickListener {
+            finish()
+            Toast.makeText(this, "Нажата кнопка: ${button3.text}", Toast.LENGTH_SHORT).show()
         }
 
         val button2: Button = findViewById(R.id.buttonReset)
@@ -147,6 +161,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     {
         //TODO: Сохранить счёт игрока в бд
         super.onDestroy()
+        score = 0
         showToast("Активити GameActivity уничтожена")
     }
 
@@ -192,186 +207,242 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
         val diffX = e2.x - e1.x
         val diffY = e2.y - e1.y
 
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (diffX > 0) {
-                for (i in 0..15)
-                {
-                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
-                    val myButton = findViewById<Button>(buttonId)
-                    var translateAnimation: Animation? = null
-                    if (masOfAnimationCount[i] == 1)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right1)
-                    }
-                    else if (masOfAnimationCount[i] == 2)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right2)
-                    }
-                    else if (masOfAnimationCount[i] == 3)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right3)
-                    }
-                    if (translateAnimation != null) {
-                        translateAnimation?.setAnimationListener(object :
-                            Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                // Изменение цвета кнопки после завершения анимации
-                                myButton.setBackgroundResource(0)
-
-                                myButton.setBackgroundResource(android.R.drawable.btn_default)
-                                myButton.setBackgroundColor(R.color.backgroundColor)
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-
-                            }
-                        })
-
-                        myButton.startAnimation(translateAnimation)
-                    }
-
-                }
-
-            } else {
-                for (i in 0..15)
-                {
-                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
-                    val myButton = findViewById<Button>(buttonId)
-                    var translateAnimation: Animation? = null
-                    if (masOfAnimationCount[i] == 1)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left1)
-                    }
-                    else if (masOfAnimationCount[i] == 2)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left2)
-                    }
-                    else if (masOfAnimationCount[i] == 3)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left3)
-                    }
-                    if (translateAnimation != null) {
-                        translateAnimation?.setAnimationListener(object :
-                            Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                // Изменение цвета кнопки после завершения анимации
-                                myButton.setBackgroundResource(0)
-
-                                myButton.setBackgroundResource(android.R.drawable.btn_default)
-                                myButton.setBackgroundColor(R.color.backgroundColor)
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-
-                            }
-                        })
-
-                        myButton.startAnimation(translateAnimation)
-                    }
-
-                }
-            }
-        } else {
-            if (diffY > 0) {
-                for (i in 0..15)
-                {
-                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
-                    val myButton = findViewById<Button>(buttonId)
-                    var translateAnimation: Animation? = null
-                    if (masOfAnimationCount[i] == 1)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down1)
-                    }
-                    else if (masOfAnimationCount[i] == 2)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down2)
-                    }
-                    else if (masOfAnimationCount[i] == 3)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down3)
-                    }
-                    if (translateAnimation != null) {
-                        translateAnimation?.setAnimationListener(object :
-                            Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                // Изменение цвета кнопки после завершения анимации
-                                myButton.setBackgroundResource(0)
-
-                                myButton.setBackgroundResource(android.R.drawable.btn_default)
-                                myButton.setBackgroundColor(R.color.backgroundColor)
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-
-                            }
-                        })
-
-                        myButton.startAnimation(translateAnimation)
-                    }
-
-                }
-            } else {
-                for (i in 0..15)
-                {
-                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
-                    val myButton = findViewById<Button>(buttonId)
-                    var translateAnimation: Animation? = null
-                    if (masOfAnimationCount[i] == 1)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up1)
-                    }
-                    else if (masOfAnimationCount[i] == 2)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up2)
-                    }
-                    else if (masOfAnimationCount[i] == 3)
-                    {
-                        translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up3)
-                    }
-                    if (translateAnimation != null) {
-                        translateAnimation?.setAnimationListener(object :
-                            Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                // Изменение цвета кнопки после завершения анимации
-                                myButton.setBackgroundResource(0)
-
-                                myButton.setBackgroundResource(android.R.drawable.btn_default)
-                                myButton.setBackgroundColor(R.color.backgroundColor)
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-
-                            }
-                        })
-
-                        myButton.startAnimation(translateAnimation)
-                    }
-
-                }
+        fun genRect()
+        {
+            val buttonIdInt = GameBrain.getRandomNumberForButton()
+            if (buttonIdInt != null)
+            {
+                val buttonId = resources.getIdentifier("button${buttonIdInt+1}", "id", packageName)
+                val myButton = findViewById<Button>(buttonId)
+                myButton.text = masOfNumbers[buttonIdInt].toString()
+                myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
             }
         }
-        return true
-    }
 
-    private fun dpToPx(dp: Float): Int {
-        val density = resources.displayMetrics.density
-        return (dp * density).toInt()
+        if (Math.abs(diffX) > Math.abs(diffY))
+        {
+            if (diffX > 0 && GameBrain.canTurnRight())
+            {
+                GameBrain.turnArrayRight()
+
+                for (i in 0..15) {
+                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+                    val myButton = findViewById<Button>(buttonId)
+                    var translateAnimation: Animation? = null
+
+                    when (masOfAnimationCount[i]) {
+                        1 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right1)
+                        2 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right2)
+                        3 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_right3)
+                    }
+
+                    if (translateAnimation != null) {
+                        translateAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation?) {
+                                myButton.text = ""
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                // Выполняем код после завершения анимации
+                                if (masOfNumbers[i] != 0) {
+                                    myButton.text = masOfNumbers[i].toString()
+                                }
+                                else
+                                {
+                                    myButton.text = ""
+                                }
+                                myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                                // Не используется
+                            }
+                        })
+
+                        myButton.startAnimation(translateAnimation)
+                    } else {
+                        // Если анимации нет, сразу обновляем текст и цвет кнопки
+                        if (masOfNumbers[i] != 0) {
+                            myButton.text = masOfNumbers[i].toString()
+                        }
+                        else
+                        {
+                            myButton.text = ""
+                        }
+                        myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                    }
+                }
+                genRect()
+
+            }
+            else if (diffX < 0 && GameBrain.canTurnLeft())
+            {
+                GameBrain.turnArrayLeft()
+                for (i in 0..15) {
+                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+                    val myButton = findViewById<Button>(buttonId)
+                    var translateAnimation: Animation? = null
+
+                    when (masOfAnimationCount[i]) {
+                        1 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left1)
+                        2 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left2)
+                        3 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_left3)
+                    }
+
+                    if (translateAnimation != null) {
+                        translateAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation?) {
+                                myButton.text = ""
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                // Выполняем код после завершения анимации
+                                if (masOfNumbers[i] != 0) {
+                                    myButton.text = masOfNumbers[i].toString()
+                                }
+                                else
+                                {
+                                    myButton.text = ""
+                                }
+                                myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                                // Не используется
+                            }
+                        })
+
+                        myButton.startAnimation(translateAnimation)
+                    } else {
+                        // Если анимации нет, сразу обновляем текст и цвет кнопки
+                        if (masOfNumbers[i] != 0) {
+                            myButton.text = masOfNumbers[i].toString()
+                        }
+                        else
+                        {
+                            myButton.text = ""
+                        }
+                        myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                    }
+                }
+                genRect()
+            }
+        }
+        else
+        {
+            if (diffY > 0 && GameBrain.canTurnDown())
+            {
+                GameBrain.turnArrayDown()
+                for (i in 0..15) {
+                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+                    val myButton = findViewById<Button>(buttonId)
+                    var translateAnimation: Animation? = null
+
+                    when (masOfAnimationCount[i]) {
+                        1 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down1)
+                        2 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down2)
+                        3 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_down3)
+                    }
+
+                    if (translateAnimation != null) {
+                        translateAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation?) {
+                                myButton.text = ""
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                // Выполняем код после завершения анимации
+                                if (masOfNumbers[i] != 0)
+                                {
+                                    myButton.text = masOfNumbers[i].toString()
+                                }
+                                else
+                                {
+                                    myButton.text = ""
+                                }
+                                myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                                // Не используется
+                            }
+                        })
+
+                        myButton.startAnimation(translateAnimation)
+                    } else {
+                        // Если анимации нет, сразу обновляем текст и цвет кнопки
+                        if (masOfNumbers[i] != 0)
+                        {
+                            myButton.text = masOfNumbers[i].toString()
+                        }
+                        else
+                        {
+                            myButton.text = ""
+                        }
+                        myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                    }
+                }
+                genRect()
+            }
+            else if (diffY < 0 && GameBrain.canTurnUp())
+            {
+                GameBrain.turnArrayUp()
+                for (i in 0..15) {
+                    val buttonId = resources.getIdentifier("button${i+1}", "id", packageName)
+                    val myButton = findViewById<Button>(buttonId)
+                    var translateAnimation: Animation? = null
+
+                    when (masOfAnimationCount[i]) {
+                        1 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up1)
+                        2 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up2)
+                        3 -> translateAnimation = AnimationUtils.loadAnimation(this, R.anim.move_up3)
+                    }
+
+                    if (translateAnimation != null) {
+                        translateAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation?) {
+                                myButton.text = ""
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                // Выполняем код после завершения анимации
+                                if (masOfNumbers[i] != 0) {
+                                    myButton.text = masOfNumbers[i].toString()
+                                }
+                                else
+                                {
+                                    myButton.text = ""
+                                }
+                                myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                                // Не используется
+                            }
+                        })
+
+                        myButton.startAnimation(translateAnimation)
+                    } else {
+                        // Если анимации нет, сразу обновляем текст и цвет кнопки
+                        if (masOfNumbers[i] != 0) {
+                            myButton.text = masOfNumbers[i].toString()
+                        }
+                        else
+                        {
+                            myButton.text = ""
+                        }
+                        myButton.setBackgroundColor(getResources().getColor(colorMap[myButton.text.toString()]!!))
+                    }
+                }
+                genRect()
+            }
+        }
+
+        masOfAnimationCount = Array(16) { 0 }
+        var textScore: TextView = findViewById(R.id.textView5)
+        if (!GameBrain.isGameOver()) showToast("Игра закончена")
+        textScore.text = score.toString()
+        return true
     }
 
     private fun showToast(message: String) {
@@ -410,6 +481,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
             if (!isRunning) {
                 startTimer()
             }
+            isRestartDealogShowing = false
         }
 
         builder.setNegativeButton("В меню") { dialog, _ ->
@@ -422,6 +494,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
         builder.setOnDismissListener {
             if (!isRunning) {
                 startTimer()
+                isRestartDealogShowing = false
             }
         }
 

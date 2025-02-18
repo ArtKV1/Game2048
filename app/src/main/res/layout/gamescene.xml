@@ -22,6 +22,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="236dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +33,7 @@
             android:layout_marginStart="119dp"
             android:layout_marginTop="236dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,6 +44,7 @@
             android:layout_marginStart="206dp"
             android:layout_marginTop="236dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,6 +55,7 @@
             android:layout_marginStart="293dp"
             android:layout_marginTop="236dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,6 +69,7 @@
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,6 +80,7 @@
             android:layout_marginStart="119dp"
             android:layout_marginTop="323dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,6 +91,7 @@
             android:layout_marginStart="206dp"
             android:layout_marginTop="323dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,6 +102,7 @@
             android:layout_marginStart="293dp"
             android:layout_marginTop="323dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,6 +113,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="410dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,6 +124,7 @@
             android:layout_marginStart="119dp"
             android:layout_marginTop="410dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -125,6 +135,7 @@
             android:layout_marginStart="206dp"
             android:layout_marginTop="410dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,6 +146,7 @@
             android:layout_marginStart="293dp"
             android:layout_marginTop="410dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -145,6 +157,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="497dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -155,6 +168,7 @@
             android:layout_marginStart="119dp"
             android:layout_marginTop="497dp"
             android:enabled="false"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,6 +182,7 @@
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -178,6 +193,17 @@
             android:layout_marginStart="293dp"
             android:layout_marginTop="497dp"
             android:enabled="false"
+            android:background="@color/game0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_pause2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="Выход из игры"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -194,8 +220,11 @@
             android:id="@+id/button1"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:background="#D31B1B"
+            android:background="@color/game0"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="32dp"
@@ -206,6 +235,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="119dp"
@@ -216,6 +249,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="206dp"
@@ -226,6 +263,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="293dp"
@@ -239,6 +280,7 @@
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="32dp"
@@ -249,6 +291,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="119dp"
@@ -259,6 +305,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="206dp"
@@ -269,6 +319,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="293dp"
@@ -279,6 +333,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="32dp"
@@ -289,6 +347,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="119dp"
@@ -299,6 +361,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="206dp"
@@ -309,6 +375,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="293dp"
@@ -319,6 +389,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="32dp"
@@ -329,6 +403,10 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:enabled="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="119dp"
@@ -342,6 +420,7 @@
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:background="@color/game0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="206dp"
@@ -353,7 +432,10 @@
             android:layout_height="75dp"
             android:layout_marginStart="293dp"
             android:layout_marginTop="497dp"
-            android:background="#050505"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@color/game0"
             android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

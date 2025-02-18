@@ -8,4 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="backgroundColor">#FFFAF8EF</color>
+    <color name="game0">#cac1b6</color>
+    <color name="game2">#efe5da</color>
+    <color name="game4">#ebe2c8</color>
+    <color name="game8">#f1b275</color>
+    <color name="game16">#f79665</color>
+    <color name="game32">#f77c5d</color>
+    <color name="game64">#f75d3a</color>
+    <color name="game128">#eece70</color>
+    <color name="game256">#ebcc63</color>
+    <color name="game512">#eec94f</color>
+    <color name="game1024">#ecc440</color>
+    <color name="game2048">#ecc22f</color>
 </resources>
