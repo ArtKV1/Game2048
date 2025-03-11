@@ -202,7 +202,8 @@ class GameBrain
         fun turnArrayRight() {
             doMatrix()
 
-            for (row in 0 until 4) {
+            for (row in 0 until 4)
+            {
                 val currentRow = IntArray(4) { 0 } // Временный массив для строки
                 val originalIndices = IntArray(4) { -1 } // Запоминаем исходные индексы элементов
                 var index = 3 // Начинаем с конца строки
@@ -258,22 +259,6 @@ class GameBrain
                         GameActivity.masOfAnimationCount[newIndices[col]] += (col - (newIndices[col] % 4)).absoluteValue
                     }
                 }
-            }
-
-            // Выводим матрицу после сдвига
-            println("Матрица после сдвига:")
-            for (row in 0 until 4) {
-                for (col in 0 until 4) {
-                    print("${matrixNumbers[row][col]}\t")
-                }
-                println()
-            }
-
-            // Выводим одномерный массив сдвигов
-            println("Количество сдвигов:")
-            for (i in 0 until 16) {
-                print("${GameActivity.masOfAnimationCount[i]}\t")
-                if ((i + 1) % 4 == 0) println() // Перенос строки для удобства
             }
 
             doMassive()

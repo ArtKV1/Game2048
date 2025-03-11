@@ -3,7 +3,6 @@ package com.example.game2048
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,11 +11,11 @@ import android.view.MotionEvent
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 
 
 class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
@@ -29,6 +28,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     private var isRestartDealogShowing = false
     private val handler = Handler(Looper.getMainLooper())
     private var totalTranslationX = 0f
+    private var isGameInitialized = false
 
     private val colorMap = mapOf(
         "" to R.color.game0,
@@ -50,6 +50,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
         public var masOfAnimationCount: Array<Int> = Array(16) { 0 }
         public lateinit var masOfNumbers: Array<Int>
         public var score: Int = 0
+        public var name: String? = null
     }
 
     private lateinit var gestureDetector: GestureDetector
@@ -72,55 +73,101 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
         }
     }
 
+    interface OnUserNameEnteredListener {
+        fun onUserNameEntered(userName: String?)
+    }
+
+    private fun showUserNameDialog(listener: OnUserNameEnteredListener) {
+        val input = EditText(this)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Введите ваше имя")
+        builder.setView(input)
+        builder.setPositiveButton(
+            "Сохранить"
+        ) { dialog, which ->
+            val userName = input.text.toString()
+            listener.onUserNameEntered(userName)
+        }
+        builder.setNegativeButton(
+            "Отмена"
+        ) { dialog, which -> dialog.cancel() }
+
+        builder.setOnCancelListener {
+            showToast("Имя не задано")
+            finish()
+        }
+
+        builder.show()
+    }
+
+    private fun initializeGame()
+    {
+        if (name != null && name != "" /*&& name.toString().contains(" ")*/)
+        {
+            startGame()
+
+            timerTextView = findViewById(R.id.timerTextView)
+            startTimer()
+
+            val button: Button = findViewById(R.id.button_pause)
+
+            button.setOnClickListener {
+                isRunning = false
+                showRestartDialog()
+                Toast.makeText(this, "Нажата кнопка: ${button.text}", Toast.LENGTH_SHORT).show()
+            }
+
+            val button3: Button = findViewById(R.id.button_pause2)
+
+            button3.setOnClickListener {
+                finish()
+                Toast.makeText(this, "Нажата кнопка: ${button3.text}", Toast.LENGTH_SHORT).show()
+            }
+
+            val button2: Button = findViewById(R.id.buttonReset)
+
+            button2.setOnClickListener {
+                finish()
+                val intent = Intent(this, GameActivity::class.java)
+                Toast.makeText(this, "Нажата кнопка: ${button2.text}", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            }
+        }
+        else
+        {
+            showToast("Имя не задано или введён пробел")
+            finish()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gamescene)
 
-        startGame()
+        showUserNameDialog(object : OnUserNameEnteredListener {
+            override fun onUserNameEntered(userName: String?) {
+                println("Имя пользователя: $userName")
 
-        timerTextView = findViewById(R.id.timerTextView)
-        startTimer()
-
-        val button: Button = findViewById(R.id.button_pause)
-
-        button.setOnClickListener {
-            isRunning = false
-            showRestartDialog()
-            Toast.makeText(this, "Нажата кнопка: ${button.text}", Toast.LENGTH_SHORT).show()
-        }
-
-        val button3: Button = findViewById(R.id.button_pause2)
-
-        button3.setOnClickListener {
-            finish()
-            Toast.makeText(this, "Нажата кнопка: ${button3.text}", Toast.LENGTH_SHORT).show()
-        }
-
-        val button2: Button = findViewById(R.id.buttonReset)
-
-        button2.setOnClickListener {
-            finish()
-            val intent = Intent(this, GameActivity::class.java)
-            Toast.makeText(this, "Нажата кнопка: ${button2.text}", Toast.LENGTH_SHORT).show()
-            startActivity(intent)
-        }
+                name = userName
+                initializeGame()
+                isGameInitialized = true
+            }
+        })
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart()
     {
-        //TODO: Сделать привязки свайпов. СДЕЛАНО!
         super.onStart()
 
         gestureDetector = GestureDetector(this, this)
 
         val gameLayout: ConstraintLayout = findViewById(R.id.gameLayout)
 
-        // Устанавливаем обработчик нажатий для Layout
-        //showToast("Обработчик свайпов был добавлен")
         gameLayout.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
         }
@@ -130,21 +177,15 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
 
     override fun onPause()
     {
-        //TODO: ОСТАНОВКА ТАЙМЕРА. СДЕЛАНО!
         super.onPause()
-        isRunning = false
+        if (name != null && isGameInitialized)
+            isRunning = false
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStop()
     {
-        //TODO: Убрать привязки свайпов. ОНО 100% РАБОТАЕТ! Потому что кнопка меняется!
-        //TODO: СДЕЛАНО!
         super.onStop()
-
-//        val button: Button = findViewById(R.id.button_pause)
-//
-//        button.text = "СТОП"
 
         val gameLayout: ConstraintLayout = findViewById(R.id.gameLayout)
         gameLayout.setOnTouchListener(null)
@@ -159,16 +200,21 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
 
     override fun onDestroy()
     {
-        //TODO: Сохранить счёт игрока в бд
         super.onDestroy()
+        if (name != null && name != "") {
+            val dbAdapter = DbAdapter(this);
+            dbAdapter.insertData(name, score)
+        }
+
         score = 0
+        name = null
         showToast("Активити GameActivity уничтожена")
     }
 
     override fun onResume() {
         //TODO: Начало таймера. СДЕЛАНО!
         super.onResume()
-        if (!isCreated) {
+        if (!isCreated && isGameInitialized) {
             startTimer()
         }
     }
@@ -177,6 +223,7 @@ class GameActivity : ComponentActivity(), GestureDetector.OnGestureListener
     {
         isRunning = true
         isCreated = true
+
         handler.postDelayed(object : Runnable {
             override fun run() {
                 if (isRunning) {

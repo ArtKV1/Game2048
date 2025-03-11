@@ -25,13 +25,17 @@ class TopPlayersActivity : ComponentActivity()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val items = listOf(
-            "Игрок 1 - 5555",
-            "Игрок 2 - 666",
-            "Игрок 3 - 888",
-            "Игрок 4 - 888",
-            "Игрок 5 - 4548",
-            "Игрок 6 - 777")
+        val dbAdapter = DbAdapter(this);
+
+        val items = dbAdapter.getAllPlayers()
+
+//        val items = listOf(
+//            "Игрок 1 - 5555",
+//            "Игрок 2 - 666",
+//            "Игрок 3 - 888",
+//            "Игрок 4 - 888",
+//            "Игрок 5 - 4548",
+//            "Игрок 6 - 777")
         val adapter = TopPlayersAdapter(items)
         recyclerView.adapter = adapter
     }
